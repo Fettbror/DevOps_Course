@@ -44,7 +44,7 @@ jobs:
 
       - name: Upload error log
         if: ${{ failure() && github.event.inputs.log_error == 'true' }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: error-log
           path: pytest.log
