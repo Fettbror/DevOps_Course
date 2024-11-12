@@ -1,7 +1,7 @@
 import streamlit as st
 from get_weather_data import fetch_weather_data
 from dashboard import plot_temperature_trends, plot_precipitation, plot_wind_speed
-
+import os
 # Cities and their coordinates
 city_coordinates = {
     "Stockholm": (59.334591, 18.063240),
@@ -9,6 +9,7 @@ city_coordinates = {
     "Malmö": (55.605870, 13.000730)
 }
 
+os.environ["STREAMLIT_SERVER_PORT"] = "80" #Lyssnar på port 80
 st.title("Weather App for Selected Cities")
 
 selected_city = st.selectbox("Choose a city", list(city_coordinates.keys()))
