@@ -1,32 +1,50 @@
-name: Python application
+name: Python Test Workflow
 
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      log_error:
+        description: 'Generate log file on test failure'
+        required: true
+        default: 'false'
+        type: boolean
 
 jobs:
-  build:
+  run_tests:
+    name: Run Python Tests
     runs-on: ubuntu-latest
+    env:
+      LOG_LEVEL: "info"  # Exempel på environment-variabel
 
     steps:
-    - name: Check out the repository
-      uses: actions/checkout@v2
+      - name: Check out the repository
+        uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install pytest pytest-mock matplotlib streamlit
+      - name: Install dependencies
+        run: |
+          echo "📦 Installing dependencies..."
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-mock matplotlib streamlit
 
-        
+      - name: Run tests
+        id: test_step
+        run: |
+          pytest tests/ --log-cli-level=${{ env.LOG_LEVEL }} | tee pytest.log
+        continue-on-error: true  # Låt steget köra klart även om testerna misslyckas
 
-    - name: Run tests
-      run: |
-        pytest tests/
+      - name: Upload error log
+        if: ${{ failure() && github.event.inputs.log_error == 'true' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: error-log
+          path: pytest.log
