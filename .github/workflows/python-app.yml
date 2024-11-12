@@ -18,7 +18,7 @@ jobs:
     name: Run Python Tests
     runs-on: ubuntu-latest
     env:
-      LOG_LEVEL: "info"  # Exempel på environment-variabel
+      LOG_LEVEL: "info" 
 
     steps:
       - name: Check out the repository
