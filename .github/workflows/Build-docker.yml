@@ -20,4 +20,4 @@ jobs:
       - name: Build and Push Docker Image
         run: |
           docker build -t mainricko/myapp:${{ github.sha }} .
-          docker push myusername/myapp:${{ github.sha }}
+          docker push mainricko/myapp:${{ github.sha }}
