@@ -9,7 +9,6 @@ on:
       - main
   workflow_dispatch:
 
-
 jobs:
   build_and_push_docker:
     name: Build and Push Docker Image
@@ -24,7 +23,12 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and Push Docker Image
+      - name: Build Docker Image
         run: |
-          docker build -t mainricko/myapp:${{ github.sha }} .
-          docker push mainricko/myapp:${{ github.sha }}
+          docker build -t mainricko/myapp:${{ github.sha }} -t mainricko/myapp:latest .
+
+      - name: Push Docker Image with Git SHA tag
+        run: docker push mainricko/myapp:${{ github.sha }}
+
+      - name: Push Docker Image with Latest Tag
+        run: docker push mainricko/myapp:latest
