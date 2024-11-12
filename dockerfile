@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # 6. Ange kommandot för att köra applikationen
-CMD ["python", "app.py"]
+CMD ["nginx", "-g", "daemon off;"]  
