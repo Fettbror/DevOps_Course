@@ -25,7 +25,7 @@ jobs:
         pip install -r requirements.txt
         pip install pytest
         pip install matplotlib
-
+        pip install streamlit
     - name: Run tests
       run: |
         pytest tests/
