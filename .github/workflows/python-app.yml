@@ -34,7 +34,6 @@ jobs:
           echo "📦 Installing dependencies..."
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest pytest-mock matplotlib streamlit
 
       - name: Run tests
         id: test_step
