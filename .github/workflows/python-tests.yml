@@ -18,7 +18,9 @@ jobs:
     name: Run Python Tests
     runs-on: ubuntu-latest
     env:
-      LOG_LEVEL: "info"  # Exempel på environment-variabel
+      LOG_LEVEL: "info" 
+      API_KEY: ${{ secrets.API_KEY }}
+      REPOSITORY_NAME: ${{ github.repository }}
 
     steps:
       - name: Check out the repository
@@ -34,13 +36,12 @@ jobs:
           echo "📦 Installing dependencies..."
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest pytest-mock matplotlib streamlit
 
       - name: Run tests
         id: test_step
         run: |
           pytest tests/ --log-cli-level=${{ env.LOG_LEVEL }} | tee pytest.log
-        continue-on-error: true  # Låt steget köra klart även om testerna misslyckas
+        continue-on-error: true  # let it run even when failed
 
       - name: Upload error log
         if: ${{ failure() && github.event.inputs.log_error == 'true' }}
