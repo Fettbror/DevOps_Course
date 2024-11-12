@@ -13,20 +13,36 @@ jobs:
     steps:
     - name: Check out the repository
       uses: actions/checkout@v2
+      run: |
+        echo "📝 Checking out the repository..."
 
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
         python-version: '3.x'
+      run: |
+        echo "🐍 Setting up Python..."
 
     - name: Install dependencies
       run: |
+        echo "📦 Installing dependencies..."
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install pytest pytest-mock matplotlib streamlit
-
-        
+      continue-on-error: false  # Stop workflow if this step fails
 
     - name: Run tests
       run: |
-        pytest tests/
+        echo "🚀 Running tests..."
+        pytest tests/ || echo "❌ Tests failed!" && exit 1
+      continue-on-error: false  # Stop workflow if this step fails
+
+    - name: Success Log
+      if: success()
+      run: |
+        echo "✅ All steps completed successfully!"
+
+    - name: Failure Log
+      if: failure()
+      run: |
+        echo "❌ Workflow failed during one of the steps!"
