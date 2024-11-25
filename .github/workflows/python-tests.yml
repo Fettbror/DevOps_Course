@@ -41,7 +41,7 @@ jobs:
         id: test_step
         run: |
           pytest tests/ --log-cli-level=${{ env.LOG_LEVEL }} | tee pytest.log
-        continue-on-error: true
+        continue-on-error: false
 
       - name: Upload error log
         if: ${{ failure() && github.event.inputs.log_error == 'true' }}
